@@ -1,0 +1,5 @@
+Schedule and deliverable
+
+1)Low poly trees, rocks and water -- Tue by 9pm(estimate 8hrs)
+2)Billboards - clouds, fogs, trees -- Wed by 9pm(estimate 6hrs)
+3)Lights - Area Light, Directional Light and Point Light -- Wed by 11pm(estimate 2hrs)
