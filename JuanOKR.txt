@@ -1,0 +1,2 @@
+1) First version of GDD, specific tools and link to repo -- Tuesday by 9pm (estimate 8 hours)
+2) Design and develop a puzzle to demonstrate the fun factor (make use of primitive like cube, sphere and cylinder) -- Wednesday by 11 pm (estimate 8 hours)
