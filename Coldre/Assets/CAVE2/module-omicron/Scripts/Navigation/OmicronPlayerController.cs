@@ -28,6 +28,7 @@
 using UnityEngine;
 using System.Collections;
 
+
 public class OmicronPlayerController : OmicronWandUpdater {
 
 	string version = "v2.0-alpha2";

@@ -2,9 +2,11 @@ using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
+
 namespace UnityStandardAssets.Characters.ThirdPerson
 {
     [RequireComponent(typeof (ThirdPersonCharacter))]
+
     public class ThirdPersonUserControl : MonoBehaviour
     {
         private ThirdPersonCharacter m_Character; // A reference to the ThirdPersonCharacter on the object
@@ -46,7 +48,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         private void FixedUpdate()
         {
             // read inputs
-			float h = CrossPlatformInputManager.GetAxis("Horizontal");
+			float h = CrossPlatformInputManager.GetAxis("Horizontal");//CAVE2Manager.GetAxis (wandID, forwardAxis);
             float v = CrossPlatformInputManager.GetAxis("Vertical");
             bool crouch = Input.GetKey(KeyCode.C);
 
