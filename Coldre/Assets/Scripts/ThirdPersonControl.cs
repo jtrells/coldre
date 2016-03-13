@@ -38,7 +38,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		{
 			if (!m_Jump)
 			{
-				m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
+				m_Jump = Input.GetKey(KeyCode.F);
 			}
 		}
 		
@@ -47,7 +47,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		private void FixedUpdate()
 		{
 			// read inputs
-			float h = CrossPlatformInputManager.GetAxis("Horizontal");//CAVE2Manager.GetAxis (1, CAVE2Manager.Axis.LeftAnalogStickUD);
+			float h = CAVE2Manager.GetAxis (1, CAVE2Manager.Axis.LeftAnalogStickLR);
 			float v = CAVE2Manager.GetAxis (1, CAVE2Manager.Axis.LeftAnalogStickUD);
 			bool crouch = Input.GetKey(KeyCode.C);
 			
