@@ -35,7 +35,7 @@ public class ColdreCameraController : MonoBehaviour
 
 	Vector3 targetPos = Vector3.zero;
 	Vector3 destination = Vector3.zero;
-	CharacterController characterController;
+	ColdreCharacterController characterController;
 	float vOrbitInput,hOrbitInput,zoomInput,hOrbitSnapInput;
 	float rotateVelocity = 0;
 
@@ -63,8 +63,8 @@ public class ColdreCameraController : MonoBehaviour
 		target = t;
 
 		if (target != null) {
-			if (target.GetComponent<CharacterController> ()) {
-				characterController = target.GetComponent<CharacterController> ();
+			if (target.GetComponent<ColdreCharacterController> ()) {
+				characterController = target.GetComponent<ColdreCharacterController> ();
 			} else
 				Debug.LogError ("The Camera's target needs a character conttoller.");
 		} else
