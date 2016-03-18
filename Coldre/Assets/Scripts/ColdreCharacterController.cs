@@ -31,6 +31,8 @@ public class ColdreCharacterController : MonoBehaviour
 	public PhysSettings physSettings = new PhysSettings ();
 	public InputSettings inputSettings = new InputSettings ();
 
+    public Animator anim;
+
 
 	Vector3 velocity = Vector3.zero;
 	Quaternion targetRotation;
@@ -48,12 +50,13 @@ public class ColdreCharacterController : MonoBehaviour
 			Debug.LogError ("No Rigidbody attachted");
 
 		forwardInput = turnInput = 0;
+
+        anim = transform.GetComponent<Animator>();
 	}
 
 // Update is called once per frame
 	void Update ()
 	{
-
 		GetInput ();
 		Turn ();
 	}
@@ -74,7 +77,8 @@ public class ColdreCharacterController : MonoBehaviour
 		jumpInput = CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button3) ? 1 : 0;
 
 
-		//jumpInput = Input.GetAxis("Jump_Trigger");
+        //jumpInput = Input.GetAxis("Jump_Trigger");
+
 
 	}
 
@@ -82,9 +86,14 @@ public class ColdreCharacterController : MonoBehaviour
 	{
 		if (Mathf.Abs (forwardInput) > inputSettings.inputDelay) {
 			velocity.z = moveSettings.forwardVelocity * forwardInput;
-		} else
+
+            Debug.Log(velocity.z);
+        }
+        else
 			velocity.z = 0;
-	}
+
+        anim.SetFloat("speed", velocity.z);
+    }
 
 	void Turn ()
 	{
