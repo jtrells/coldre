@@ -5,8 +5,9 @@ public class FSMAI : MonoBehaviour {
 
 
 	public float speed=1.0f;
-	public bool reversed =false;
+	public bool horizontal =false;
 	public float factor = 1;
+	private Vector3 initialPos;
 
 
 	public enum State
@@ -58,22 +59,29 @@ public class FSMAI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		initialPos = transform.position;
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (reversed)
-			state = State.Action;
+
 	}
 
 	public IEnumerator Oscillate()
 	{
 		while(true)
 		{
-			transform.position = new Vector3(transform.position.x,transform.position.y,Mathf.Sin(Time.time*factor) *speed);
-			yield return new WaitForEndOfFrame();
+			if(horizontal)
+			{
+				transform.position = new Vector3(initialPos.x-Mathf.Sin(Time.time*factor) *speed,transform.position.y,transform.position.z);
+				yield return new WaitForEndOfFrame();
+			}
+			else
+			{
+				transform.position = new Vector3(transform.position.x,transform.position.y,initialPos.z-Mathf.Sin(Time.time*factor) *speed);
+				yield return new WaitForEndOfFrame();
+			}
 
 
 		}
