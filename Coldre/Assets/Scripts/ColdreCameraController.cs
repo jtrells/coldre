@@ -7,6 +7,9 @@ public class ColdreCameraController : MonoBehaviour
 	public float lookSmooth = 0.09f;
 	public Vector3 offsetFromTarget = new Vector3 (0, 6, -8);
 
+
+
+
 	[System.Serializable]
 	public class PositionSettings
 	{
@@ -42,20 +45,27 @@ public class ColdreCameraController : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		SetCameraTarget (target);
+		if (target != null) {
+			SetCameraTarget (target);
 
-		targetPos = target.position + position.targetPosOffset;
-		destination = Quaternion.Euler (orbit.xRotation, orbit.yRotation, 0) * -Vector3.forward * position.distanceFromTarget;
-		destination += targetPos;
-		transform.position = destination;
+			targetPos = target.position + position.targetPosOffset;
+			destination = Quaternion.Euler (orbit.xRotation, orbit.yRotation, 0) * -Vector3.forward * position.distanceFromTarget;
+			destination += targetPos;
+			transform.position = destination;
+		}
+
+
+
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		GetInput ();
-		OrbitTarget ();
-		ZoomInOnTarget ();
+		if (target != null) {
+			GetInput ();
+			OrbitTarget ();
+			ZoomInOnTarget ();
+		}
 	}
 
 	public void SetCameraTarget (Transform t)
@@ -79,8 +89,10 @@ public class ColdreCameraController : MonoBehaviour
 	}
 	void LateUpdate ()
 	{
-		MoveToTarget ();
-		LookAtTarget ();
+		if (target != null) {
+			MoveToTarget ();
+			LookAtTarget ();
+		}
 	}
 
 	void MoveToTarget ()

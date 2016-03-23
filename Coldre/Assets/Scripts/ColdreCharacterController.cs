@@ -92,7 +92,7 @@ public class ColdreCharacterController : MonoBehaviour
         else
 			velocity.z = 0;
 
-        anim.SetFloat("speed", velocity.z);
+        anim.SetFloat("speed", velocity.z,0.001f,Time.deltaTime);
     }
 
 	void Turn ()
