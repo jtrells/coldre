@@ -87,7 +87,6 @@ public class ColdreCharacterController : MonoBehaviour
 		if (Mathf.Abs (forwardInput) > inputSettings.inputDelay) {
 			velocity.z = moveSettings.forwardVelocity * forwardInput;
 
-            Debug.Log(velocity.z);
         }
         else
 			velocity.z = 0;
