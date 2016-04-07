@@ -99,5 +99,7 @@ public class StoryMusicBox : MonoBehaviour {
         yield return new WaitForSeconds(2.0f);
         Particles[0].GetComponent<ParticleSystem>().startColor = new Color(255, 255, 255, 0.01f);
         Particles[1].GetComponent<ParticleSystem>().startColor = new Color(255, 255, 255, 0.01f);
+
+        Application.LoadLevel("playstesting");
     }
 }
