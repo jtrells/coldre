@@ -21,7 +21,7 @@ public class PushAction : MonoBehaviour {
 	{
 		direction = transform.position - target.transform.position;
 		direction.Normalize ();
-		if(isPushAllow&&CAVE2Manager.GetButton(1,CAVE2Manager.Button.Button7))
+		if(isPushAllow&&CAVE2Manager.GetButton(1,CAVE2Manager.Button.Button2))
 		{
             target.GetComponent<Animator>().SetBool("isPushing", true);
 			transform.GetComponent<Rigidbody>().AddForce(direction*1000);

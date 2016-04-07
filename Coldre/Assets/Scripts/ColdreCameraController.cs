@@ -19,7 +19,11 @@ public class ColdreCameraController : MonoBehaviour
 		public float zoomSmooth = 100f;
 		public float maxZoom = -2f;
 		public float minZoom = -15f;
+		public bool smoothFollow = true;
+		public float smooth = 0.05f;
 
+		[HideInInspector]
+		public float adjustmentDistance = -8;
 	}
 
 	[System.Serializable]
@@ -33,11 +37,22 @@ public class ColdreCameraController : MonoBehaviour
 		public float hOrbitSmooth = 150f;
 	}
 
+	[System.Serializable]
+	public class DebugSettings
+	{
+		public bool drawDesiredCollisionLines = true;
+		public bool drawAdjustedCollisionLines = true;
+	}
+
 	public PositionSettings position = new PositionSettings ();
 	public OrbitSettings orbit = new OrbitSettings ();
+	public DebugSettings debug = new DebugSettings ();
+	public CollisionHandeler collision = new CollisionHandeler ();
 
 	Vector3 targetPos = Vector3.zero;
 	Vector3 destination = Vector3.zero;
+	Vector3 adjustedDestination = Vector3.zero;
+	Vector3 camVel = Vector3.zero;
 	ColdreCharacterController characterController;
 	float vOrbitInput,hOrbitInput,zoomInput,hOrbitSnapInput;
 	float rotateVelocity = 0;
@@ -48,10 +63,12 @@ public class ColdreCameraController : MonoBehaviour
 		if (target != null) {
 			SetCameraTarget (target);
 
-			targetPos = target.position + position.targetPosOffset;
-			destination = Quaternion.Euler (orbit.xRotation, orbit.yRotation, 0) * -Vector3.forward * position.distanceFromTarget;
-			destination += targetPos;
-			transform.position = destination;
+			MoveToTarget();
+
+//			collision.Initialize(Camera.main);
+//			collision.UpdateCameraClipPoints(transform.position, transform.rotation,ref collision.adjustedCameraClipPoints);
+//			collision.UpdateCameraClipPoints(destination, transform.rotation,ref collision.desiredCameraClipPoints);
+
 		}
 
 
@@ -68,6 +85,26 @@ public class ColdreCameraController : MonoBehaviour
 		}
 	}
 
+	void FixedUpdate()
+	{
+//		collision.UpdateCameraClipPoints(transform.position, transform.rotation,ref collision.adjustedCameraClipPoints);
+//		collision.UpdateCameraClipPoints(destination, transform.rotation,ref collision.desiredCameraClipPoints);
+//
+//		for (int i =0; i<5; i++) {
+//		if(debug.drawDesiredCollisionLines)
+//			{
+//				Debug.DrawLine(targetPos,collision.desiredCameraClipPoints[i],Color.white);
+//			}
+//		if(debug.drawAdjustedCollisionLines)
+//			{
+//				Debug.DrawLine(targetPos,collision.adjustedCameraClipPoints[i],Color.green);
+//			}
+//		}
+//
+//		collision.CheckColliding (targetPos);
+//		position.adjustmentDistance = collision.GetAdjustedDistanceWithRayFrom (targetPos);
+	}
+
 	public void SetCameraTarget (Transform t)
 	{
 		target = t;
@@ -80,6 +117,8 @@ public class ColdreCameraController : MonoBehaviour
 		} else
 			Debug.LogError ("Camera needs a target");
 	}
+
+
 
 	void GetInput()
 	{
@@ -105,7 +144,29 @@ public class ColdreCameraController : MonoBehaviour
 		destination = characterController.TargetRotation () * offsetFromTarget;
 		destination += target.position;
 		transform.position = destination;
-	}
+
+
+//		if (collision.colliding) {
+//			adjustedDestination = Quaternion.Euler (orbit.xRotation, orbit.yRotation, 0) * -Vector3.forward * position.distanceFromTarget;;
+//			adjustedDestination += targetPos;
+//			
+//			if(position.smoothFollow)
+//			{
+//				transform.position = Vector3.SmoothDamp(transform.position,adjustedDestination, ref camVel,position.smooth);
+//			}
+//			else
+//				transform.position = adjustedDestination;
+//		} else {
+//			
+//			if(position.smoothFollow)
+//			{
+//				transform.position = Vector3.SmoothDamp(transform.position,destination, ref camVel,position.smooth);
+//				
+//			}
+//			else
+//				transform.position = destination;
+//		}
+	}	
 
 	void LookAtTarget ()
 	{
@@ -124,4 +185,97 @@ public class ColdreCameraController : MonoBehaviour
 	{
 
 	}
+
+
+
+	[System.Serializable]
+	public class CollisionHandeler
+	{
+		public LayerMask collisionLayer;
+
+		[HideInInspector]
+		public bool colliding = false;
+		[HideInInspector]
+		public Vector3[] adjustedCameraClipPoints;
+		[HideInInspector]
+		public Vector3[] desiredCameraClipPoints;
+
+		Camera camera;
+
+		public void Initialize(Camera cam)
+		{
+			camera = cam;
+			adjustedCameraClipPoints = new Vector3[5];
+			desiredCameraClipPoints = new Vector3[5];
+		}
+
+		bool CollisionDetectedAtClipPoints(Vector3[] clipPoints, Vector3 fromPosition)
+		{
+			for (int i =0; i<clipPoints.Length; i++) {
+				Ray ray = new Ray(fromPosition,clipPoints[i] - fromPosition);
+				float distance = Vector3.Distance(clipPoints[i],fromPosition);
+				if(Physics.Raycast(ray,distance,collisionLayer))
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		public void UpdateCameraClipPoints(Vector3 cameraPosition,Quaternion atRotation, ref Vector3[] intoArray)
+		{
+			if (!camera)
+				return;
+			intoArray = new Vector3[5];
+
+			float z = camera.nearClipPlane;
+			float x = Mathf.Tan (camera.fieldOfView / 3.41f) * z;
+			float y = x / camera.aspect;
+
+			intoArray [0] = (atRotation * new Vector3 (-x, y, z)) + cameraPosition;
+			intoArray [1] = (atRotation * new Vector3 (x, y, z)) + cameraPosition;
+			intoArray [2] = (atRotation * new Vector3 (-x, -y, z)) + cameraPosition;
+			intoArray [3] = (atRotation * new Vector3 (x, -y, z)) + cameraPosition;
+			intoArray [4] = cameraPosition - camera.transform.forward;
+
+		}
+
+		public float GetAdjustedDistanceWithRayFrom(Vector3 from)
+		{
+			float distance = -1;
+
+			for (int i=0; i<desiredCameraClipPoints.Length; i++) {
+				Ray ray = new Ray(from,desiredCameraClipPoints[i]-from);
+				RaycastHit hit;
+				if(Physics.Raycast(ray,out hit))
+				{
+					if(distance == -1)
+						distance = hit.distance;
+					else{
+						if(hit.distance < distance)
+							distance = hit.distance;
+					}
+				}
+			}
+
+			if (distance == -1)
+				return 0;
+			else
+				return distance;
+		}
+
+		public void CheckColliding(Vector3 targetPosition)
+		{
+			if (CollisionDetectedAtClipPoints (desiredCameraClipPoints, targetPosition)) {
+				colliding = true;
+			} else {
+				colliding = false;
+			}
+
+
+		}
+	}
+
+
 }
