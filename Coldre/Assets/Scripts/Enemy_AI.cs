@@ -14,26 +14,31 @@ public class Enemy_AI : MonoBehaviour {
 	Vector3 distance;
     float mag;
 
+	Vector3 initialPos;
+
 	// Use this for initialization
 	void Start () {
 
-
+		initialPos = transform.position; 
         tr_Player = GameObject.FindGameObjectWithTag ("Player").transform;
         distance = tr_Player.position;
     }
 
     void FixedUpdate()
     {
-		if (!trapped) {
+		if (trapped) {
 			distance = tr_Player.position - transform.position;
 			mag = distance.magnitude;
 			Debug.Log (mag);
+		} else {
+			distance = initialPos - transform.position;
+			mag = distance.magnitude;
 		}
     }
 	
 	// Update is called once per frame
 	void Update () {
-		if (!trapped) {
+		if (trapped) {
 			if (mag <= range2 && mag >= range) {
 				/* Look at Player*/
 				transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.LookRotation (tr_Player.position - transform.position), f_RotSpeed * Time.deltaTime);
@@ -46,13 +51,33 @@ public class Enemy_AI : MonoBehaviour {
 				transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.LookRotation (tr_Player.position - transform.position), f_RotSpeed * Time.deltaTime);
 	
 			}
+		} else {
+			if (mag <= range2 && mag >= range) {
+				/* Look at Player*/
+				transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.LookRotation (initialPos - transform.position), f_RotSpeed * Time.deltaTime);
+			} else if (mag <= range && mag > stop) {
+				transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.LookRotation (initialPos - transform.position), f_RotSpeed * Time.deltaTime);
+				
+				/* Move at Player*/
+				transform.position += transform.forward * f_MoveSpeed * Time.deltaTime;
+			} else if (mag <= stop) {
+				transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.LookRotation (initialPos - transform.position), f_RotSpeed * Time.deltaTime);
+				
+			}
 		}
 	}
 
 	void OnTriggerEnter(Collider collider)
 	{
-		if (collider.transform== gum) {
+		if (collider.transform== tr_Player) {
 			trapped = true;
+		}
+	}
+
+	void OnTriggerExit(Collider collider)
+	{
+		if (collider.transform== tr_Player) {
+			trapped = false;
 		}
 	}
 }

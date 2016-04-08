@@ -32,12 +32,15 @@ public class ColdreCharacterController : MonoBehaviour
 	public InputSettings inputSettings = new InputSettings ();
 
     public Animator anim;
+	public Transform SpecialPower;
+	public Transform SpecialPowerPosition;
+	bool gumCreated=false;
 
 
 	Vector3 velocity = Vector3.zero;
 	Quaternion targetRotation;
 	Rigidbody rBody;
-	float forwardInput, turnInput, jumpInput;
+	float forwardInput, turnInput, jumpInput, talkInput, powerInput;
 
 // Use this for initialization
 	void Start ()
@@ -59,12 +62,15 @@ public class ColdreCharacterController : MonoBehaviour
 	{
 		GetInput ();
 		Turn ();
+
 	}
 
 	void FixedUpdate ()
 	{
 		Run ();
 		Jump ();
+
+		Power ();
 
 		rBody.velocity = transform.TransformDirection (velocity);;
 	}
@@ -76,10 +82,30 @@ public class ColdreCharacterController : MonoBehaviour
 		//jumpInput = CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button7) ? 1 : 0;
 		jumpInput = CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button3) ? 1 : 0;
 
+		talkInput = Input.GetKey (KeyCode.B) ? 1 : 0;
+		powerInput = Input.GetKey (KeyCode.N) ? 1: 0;
+
 
         //jumpInput = Input.GetAxis("Jump_Trigger");
 
 
+	}
+
+	void Power()
+	{
+		if (powerInput == 1 && !gumCreated) {
+			GameObject gum = Instantiate (SpecialPower, SpecialPowerPosition.position, Quaternion.identity) as GameObject;		
+
+
+			gumCreated = true;
+			StartCoroutine(gumDelay());
+		} 
+	}
+
+	IEnumerator gumDelay()
+	{
+		yield return new WaitForSeconds (2.0f);
+		gumCreated = false;
 	}
 
 	void Run ()
