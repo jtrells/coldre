@@ -26,7 +26,12 @@ public class StoryMusicBox : MonoBehaviour {
 		Particles [1].GetComponent<Renderer> ().enabled = false;
 		StartCoroutine (Dialog());
 	}
-
+	void Update()
+	{
+		if (CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button2)) {
+			Application.LoadLevel("playtesting3");
+		}
+	}
 
 	public IEnumerator Dialog()
 	{
@@ -100,6 +105,6 @@ public class StoryMusicBox : MonoBehaviour {
         Particles[0].GetComponent<ParticleSystem>().startColor = new Color(255, 255, 255, 0.01f);
         Particles[1].GetComponent<ParticleSystem>().startColor = new Color(255, 255, 255, 0.01f);
 
-        Application.LoadLevel("playstesting");
+        Application.LoadLevel("playtesting3");
     }
 }

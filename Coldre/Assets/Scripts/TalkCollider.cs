@@ -7,6 +7,7 @@ public class TalkCollider : MonoBehaviour {
     public string context;
     public LevelManager levelManager;
     public GameObject affectedObject;
+	public GameObject character;
 
     private bool actionEnabled = false;
 
@@ -31,13 +32,17 @@ public class TalkCollider : MonoBehaviour {
     }
 
     void Update() {
-        if (actionEnabled && Input.GetKeyDown(KeyCode.A)) {
-            if (context.Contains("fairy-what-going-on"))
+		if (actionEnabled && CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button2)) {
+		//if (actionEnabled && Input.GetKey(KeyCode.B)) {
+			if (context.Contains("fairy-what-going-on")){
+				PositionManager.characterTransform = character.transform;
                 levelManager.LoadLevel("1-whats-going-on");
-            else if (context.Contains("fairy-surprised")) {
-                levelManager.LoadLevel("2-surprised-uglifruit");
-            }
-            else if (context.Contains("destroy"))
+			}else if (context.Contains("fairy-surprised")) {
+				PositionManager.characterTransform = character.transform;
+				levelManager.LoadLevel("2-surprised-uglifruit");
+			} else if (context.Contains("first-music-box")) {
+				levelManager.LoadLevel("music-box-doing-here");
+			}else if (context.Contains("destroy"))
                 Destroy(affectedObject);
             else
                 print("no scene");
