@@ -83,6 +83,11 @@ public class ColdreCameraController : MonoBehaviour
 			OrbitTarget ();
 			ZoomInOnTarget ();
 		}
+
+		if(CAVE2Manager.GetButton (1, CAVE2Manager.Button.ButtonDown))
+		{
+			Application.LoadLevel(Application.loadedLevel);
+		}
 	}
 
 	void FixedUpdate()

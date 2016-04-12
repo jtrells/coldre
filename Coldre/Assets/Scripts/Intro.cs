@@ -30,6 +30,14 @@ public class Intro : MonoBehaviour {
 		StartCoroutine (Dialog());
 	}
 
+	void Update()
+	{
+		if (CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button7)) {
+			Application.LoadLevel("playtesting");
+
+		}
+	}
+
 
 	public IEnumerator Dialog()
 	{
@@ -107,7 +115,7 @@ public class Intro : MonoBehaviour {
         DialogPanels[1].SetActive(false);
         anim.SetBool("isIntro", true);
         yield return new WaitForSeconds(30.0f);
-        Application.LoadLevel("Demo");
+        Application.LoadLevel("playtesting");
 
         /*
 		yield return new WaitForSeconds(2.0f);

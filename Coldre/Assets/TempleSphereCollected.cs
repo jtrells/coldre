@@ -4,7 +4,8 @@ using System.Collections;
 public class TempleSphereCollected : MonoBehaviour
 {
 
-    public GameObject cloak;
+    public GameObject cloakFront;
+	public GameObject cloakBack;
     public GameObject bridge;
     public AudioSource cloakDestroyed;
     public AudioSource bridgeDown;
@@ -17,7 +18,8 @@ public class TempleSphereCollected : MonoBehaviour
     void OnTriggerEnter(Collider collider) {
         print("OnTriggerEnter purple sphere");
         bridge.SetActive(true);
-        Destroy(cloak);
+        Destroy(cloakFront);
+		Destroy(cloakBack);
         surprisedFairyAnimator.SetBool("bridgeOpened", true);
         StartCoroutine(StartSound());
     }

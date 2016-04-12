@@ -10,7 +10,7 @@ public class welcome : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button7)) {
+		if (CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button3)) {
 			Debug.Log("df");
 			Application.LoadLevel("intro");
 		}
