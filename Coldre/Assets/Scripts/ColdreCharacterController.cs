@@ -81,11 +81,13 @@ public class ColdreCharacterController : MonoBehaviour
 	{
 		forwardInput = CAVE2Manager.GetAxis (1, CAVE2Manager.Axis.LeftAnalogStickUD);
 		turnInput = CAVE2Manager.GetAxis (1, CAVE2Manager.Axis.LeftAnalogStickLR);
+		jumpInput = CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button3) ? 1 : 0;
 		//jumpInput = CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button7) ? 1 : 0;
-		jumpInput = CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button7) ? 1 : 0;
 
-		talkInput = CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button2) ? 1 : 0;
-		powerInput = CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button3) ? 1 : 0;
+		//talkInput = CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button2) ? 1 : 0;
+		talkInput = CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button7) ? 1 : 0;
+		//powerInput = CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button3) ? 1 : 0;
+		powerInput = CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button7) ? 1 : 0;
 
 
         //jumpInput = Input.GetAxis("Jump_Trigger");
