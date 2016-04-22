@@ -15,5 +15,12 @@ public class TestSceneParam : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.A)) {
             lvlManager.NewGame();
         }
-	}
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            lvlManager.bookScene = 6;
+            lvlManager.canChangePage = false;
+            lvlManager.LoadLevel("1_Book");
+        }
+    }
 }

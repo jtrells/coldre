@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Book : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class Book : MonoBehaviour
     public MeshRenderer backMeshRenderer;
     public Texture[] textures;
     public bool canChangePage = true;
+    public Text txtPressContinue;
+    
 
     public int storyNo = 0;
 
@@ -23,8 +26,9 @@ public class Book : MonoBehaviour
             canChangePage = lvlManager.canChangePage;
         }
 
-        print(lvlManager);
-        print("Story " + storyNo);
+        if (canChangePage)
+            txtPressContinue.enabled = false;
+
         StartCoroutine(TurnRightPage());
     }
 
@@ -69,6 +73,10 @@ public class Book : MonoBehaviour
                 lvlManager.LoadLevel("playtesting2");
             else if (storyNo == 4)
                 lvlManager.LoadLevel("playtesting3");
+            else if (storyNo == 5)
+                lvlManager.LoadLevel("0_WelcomeScreen");
+            else if (storyNo == 6)
+                lvlManager.LoadLevel("0_WelcomeScreen");
         }
     }
 

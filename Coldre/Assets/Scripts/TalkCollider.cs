@@ -21,9 +21,14 @@ public class TalkCollider : MonoBehaviour {
 
     void OnTriggerEnter(Collider other) {
         if (other.gameObject.tag == "Player") {
-            print("OnTriggerEnter fairy");
             instructions.enabled = true;
             actionEnabled = true;
+
+            if (context.Equals("end")) {
+                levelManager.bookScene = 5;
+                levelManager.canChangePage = false;
+                levelManager.LoadLevel("1_Book");
+            }
         }
     }
 
