@@ -85,7 +85,7 @@ public class ColdreCharacterController : MonoBehaviour
 		//jumpInput = CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button7) ? 1 : 0;
 
 		//talkInput = CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button2) ? 1 : 0;
-		talkInput = CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button7) ? 1 : 0;
+		talkInput = (CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button7) || Input.GetKeyDown(KeyCode.Z)) ? 1 : 0;
 		//powerInput = CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button3) ? 1 : 0;
 		powerInput = CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button7) ? 1 : 0;
 

@@ -5,6 +5,7 @@ public class LevelManager : MonoBehaviour {
     public static LevelManager instance = null;
 
     public int bookScene;
+    public bool canChangePage = false;
 
     //Awake is always called before any Start functions
     void Awake()
@@ -23,6 +24,13 @@ public class LevelManager : MonoBehaviour {
 
         //Sets this to not be destroyed when reloading scene
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void NewGame() {
+       bookScene = 1;
+       canChangePage = false; 
+
+       Application.LoadLevel("1_Book");
     }
 
     public void LoadLevel(string name){

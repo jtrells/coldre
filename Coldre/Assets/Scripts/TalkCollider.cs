@@ -5,7 +5,7 @@ public class TalkCollider : MonoBehaviour {
 
     public Text instructions;
     public string context;
-    public LevelManager levelManager;
+    LevelManager levelManager;
     public GameObject affectedObject;
 	public GameObject character;
 
@@ -13,6 +13,10 @@ public class TalkCollider : MonoBehaviour {
 
     void Awake() {
         instructions.enabled = false;
+    }
+
+    void Start() {
+        levelManager = FindObjectOfType<LevelManager>();
     }
 
     void OnTriggerEnter(Collider other) {
@@ -32,16 +36,27 @@ public class TalkCollider : MonoBehaviour {
     }
 
     void Update() {
-		if (actionEnabled && CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button2)) {
-		//if (actionEnabled && Input.GetKey(KeyCode.B)) {
+		if (actionEnabled && ( CAVE2Manager.GetButton (1, CAVE2Manager.Button.Button2) || Input.GetKeyDown(KeyCode.Z) )) {
+            //if (actionEnabled && Input.GetKey(KeyCode.B)) {
+
+            print("CONTEXT " + context);
+
 			if (context.Contains("fairy-what-going-on")){
-				PositionManager.characterTransform = character.transform;
-                levelManager.LoadLevel("1-whats-going-on");
-			}else if (context.Contains("fairy-surprised")) {
-				PositionManager.characterTransform = character.transform;
-				levelManager.LoadLevel("2-surprised-uglifruit");
-			} else if (context.Contains("first-music-box")) {
-				levelManager.LoadLevel("music-box-doing-here");
+                levelManager.bookScene = 2;
+                levelManager.canChangePage = false;
+                // levelManager.LoadLevel("1-whats-going-on");
+                levelManager.LoadLevel("1_Book");
+            }
+            else if (context.Contains("fairy-surprised")) {
+                levelManager.bookScene = 3;
+                levelManager.canChangePage = false;
+                //levelManager.LoadLevel("2-surprised-uglifruit");
+                levelManager.LoadLevel("1_Book");
+            } else if (context.Contains("first-music-box")) {
+                levelManager.bookScene = 4;
+                levelManager.canChangePage = false;
+                levelManager.LoadLevel("1_Book");
+                //levelManager.LoadLevel("music-box-doing-here");
 			}else if (context.Contains("destroy"))
                 Destroy(affectedObject);
             else

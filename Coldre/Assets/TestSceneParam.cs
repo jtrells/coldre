@@ -13,8 +13,7 @@ public class TestSceneParam : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (Input.GetKeyDown(KeyCode.A)) {
-            lvlManager.bookScene = 3;
-            lvlManager.LoadLevel("1_Book");
+            lvlManager.NewGame();
         }
 	}
 }
